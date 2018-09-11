@@ -10,6 +10,8 @@ namespace CreatureGame
     public class CreatureRepository
     {
         public List<Creature> creatures = new List<Creature>();
+
+
         public void CreateCreatureRepository()
         {
             var filePath = @"C:\Users\Bruger\Desktop\GameInput.txt";
@@ -36,6 +38,51 @@ namespace CreatureGame
                 }
             }
         }
+        public void Run()
+        {
+            bool exit = false;
+            CreateCreatureRepository();
+            while (exit == false)
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Currtent creatures: \n");
+                foreach (var creature in creatures)
+                {
+                    Thread.Sleep(250);
+                    Console.WriteLine(" NAME -      ATTACK - DEFENSE -    FRACTION ");
+                    Console.WriteLine($" { creature.Name }      { creature.Attack }         { creature.Defense }        { creature.group } \n");
+                }
+                Thread.Sleep(1000);
+                Console.WriteLine("Choose a creature and type its name: ");
+                string input = Console.ReadLine().ToLower();
+                Creature choosenCreature = new Creature();
+
+                foreach (var creature in creatures)
+                {
+                    if (input == creature.Name.ToLower())
+                    {
+                        choosenCreature = creature;
+                        Console.WriteLine("You have choosen: " + choosenCreature.Name.ToUpper());
+                    }
+                }
+                PickRandomCreature(choosenCreature, input);
+                Console.WriteLine("Do you want to repeat the game? \n\n press Y to repeat, N to exit \n\n Type ADD to add a creature");
+                var userInput = Console.ReadLine().ToLower();
+                if (userInput == "y")
+                {
+                    exit = false;
+                }
+                //else if(userInput == "add")
+                //{
+                //    AddCreatrure();
+                //}
+                else
+                {
+                    exit = true;
+                }
+            }
+        }
+
         public void PickRandomCreature(Creature choosenCreature, string input)
         {
             bool worngGroup = true;
@@ -49,7 +96,7 @@ namespace CreatureGame
                 Creature cr = creatures[index];
                 if (cr.group != choosenCreature.group)
                 {
-                    Console.WriteLine("Fight: \n" + input.ToUpper() + " vs " + cr.Name.ToUpper());
+                    Console.WriteLine("Fight: \n\n\n" + input.ToUpper() + " vs " + cr.Name.ToUpper() + "\n");
                     Thread.Sleep(1000);
                     if ((cr.Attack + cr.Defense) > (choosenCreature.Attack + choosenCreature.Defense))
                     {
@@ -70,6 +117,44 @@ namespace CreatureGame
                     worngGroup = true;
                 }
             }
+        }
+        //public void AddCreatrure()
+        //{
+        //    Console.WriteLine("Please insert a charactere name \n");
+        //    string inputName = Console.ReadLine().ToLower();
+        //    Console.WriteLine("Please insert a charactere Attack level \n");
+        //    int inputAttackLevel = Convert.ToInt32(Console.ReadLine());
+        //    Console.WriteLine("Please insert a charactere Defense Level \n");
+        //    int inputDefenseLevel = Convert.ToInt32(Console.ReadLine());
+        //    Console.WriteLine("Please insert a charactere Fraction (DEVOTION or SPAWN) \n");
+        //    string inputGroup = Console.ReadLine().ToLower();
+
+        //    foreach (var character in creatures)
+        //    {
+        //        if (inputName == character.Name.ToLower())
+        //        {
+        //            Console.WriteLine("Character already exists. Please insert other name.");
+        //        }
+        //        else if (inputName != character.Name && inputGroup == "Devotion")
+        //        {
+        //            Creature newCreature = new Creature(enumFraction.Devotion);
+        //            newCreature.Name = inputName;
+        //            newCreature.Attack = Convert.ToInt32(inputAttackLevel);
+        //            newCreature.Defense = Convert.ToInt32(inputDefenseLevel);
+        //            creatures.Add(newCreature);
+        //            Console.WriteLine("Creature of fraction -Devotion- added successfully");
+        //        }
+        //        else if(inputName != character.Name && inputGroup == "Spawn")
+        //        {
+        //            Creature newCreature = new Creature(enumFraction.Spawn);
+        //            newCreature.Name = inputName;
+        //            newCreature.Attack = Convert.ToInt32(inputAttackLevel);
+        //            newCreature.Defense = Convert.ToInt32(inputDefenseLevel);
+        //            creatures.Add(newCreature);
+        //            Console.WriteLine("Creature of fraction -Spawn- added successfully");
+        //        }
+
+        //    }
         }
 
         //public void CreatNewCreature(string name, int attack, int defense/*enumFraction*/)
