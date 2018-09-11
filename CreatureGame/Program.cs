@@ -7,53 +7,48 @@ namespace CreatureGame
     {
         static void Main(string[] args)
         {
-            CreatureRepository repository = new CreatureRepository();
-            Console.WriteLine("Welcome to Creatures Game program\n == Version 0.1 ==");
-            repository.CreateCreatureRepository();
-            Thread.Sleep(1000);
-
-            Console.WriteLine("Currtent creatures: \n");
-            foreach (var creature in repository.creatures)
+            bool exit = false;
+            while (exit == false)
             {
-                Thread.Sleep(500);
-                Console.WriteLine(" NAME -      ATTACK - DEFENSE -    FRACTION ");
-                Console.WriteLine($" { creature.Name }      { creature.Attack }         { creature.Defense }        { creature.group } \n");
-            }
-            Thread.Sleep(1000);
-            Console.WriteLine("Choose a creature and type its name: ");
-            string input = Console.ReadLine().ToLower();
-            Creature choosenCreature = new Creature();
-
-            foreach (var creature in repository.creatures)
-            {
-                if (input == creature.Name.ToLower())
-                {
-                    choosenCreature = creature;
-                    Console.WriteLine("You have choosen: " + choosenCreature.Name);
-                }
-            }
-            Thread.Sleep(1000);
-            Random random = new Random();
-            var index = random.Next(repository.creatures.Count);
-            Creature cr = repository.creatures[index];
-            if (cr.group != choosenCreature.group)
-            {
-                Console.WriteLine("Fight: \n" + input.ToUpper() + " vs " + cr.Name.ToUpper());
+                CreatureRepository repository = new CreatureRepository();
+                Console.WriteLine("Welcome to Creatures Game program\n == Version 0.1 ==");
+                repository.CreateCreatureRepository();
                 Thread.Sleep(1000);
-                if ((cr.Attack + cr.Defense) > (choosenCreature.Attack + choosenCreature.Defense))
+
+                Console.WriteLine("Currtent creatures: \n");
+                foreach (var creature in repository.creatures)
                 {
-                    Console.WriteLine("======== " + cr.Name + " is the winner!!! ========");
+                    Thread.Sleep(250);
+                    Console.WriteLine(" NAME -      ATTACK - DEFENSE -    FRACTION ");
+                    Console.WriteLine($" { creature.Name }      { creature.Attack }         { creature.Defense }        { creature.group } \n");
                 }
-                else if ((cr.Attack + cr.Defense) == (choosenCreature.Attack + choosenCreature.Defense))
+                Thread.Sleep(1000);
+                Console.WriteLine("Choose a creature and type its name: ");
+                string input = Console.ReadLine().ToLower();
+                Creature choosenCreature = new Creature();
+
+                foreach (var creature in repository.creatures)
                 {
-                    Console.WriteLine("======== It's a fucking draw! :/ ========");
+                    if (input == creature.Name.ToLower())
+                    {
+                        choosenCreature = creature;
+                        Console.WriteLine("You have choosen: " + choosenCreature.Name.ToUpper());
+                    }
                 }
-                else if ((cr.Attack + cr.Defense) < (choosenCreature.Attack + choosenCreature.Defense))
+                repository.PickRandomCreature(choosenCreature, input);
+                Console.WriteLine("Do you want to repeat the game? \n\n press Y to repeat or N to exit ");
+                var userInput = Console.ReadLine().ToLower();
+                if (userInput == "y")
                 {
-                    Console.WriteLine("======== " + choosenCreature.Name + " is the winner!!! ========");
+                    exit = false;
                 }
+                else
+                {
+                    exit = true;
+                }
+                //Console.ReadLine();
             }
-            Console.ReadLine();
+
             //Console.WriteLine("Please insert a charactere name \n");
             //string inputName = Console.ReadLine().ToLower();
             //Console.WriteLine("Please insert a charactere Attack level \n");
@@ -73,8 +68,7 @@ namespace CreatureGame
             //    {
             //        repository.CreatNewCreature(inputName, inputAttackLevel, inputDefenseLevel);
             //    }
-            //}
-
+            //}        
         }
     }
 }
